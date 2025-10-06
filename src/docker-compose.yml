@@ -19,8 +19,8 @@ services:
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"       # host machine access
-      - "29092:29092"     # internal container access
+      - "9092:9092"
+      - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -29,6 +29,8 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      # Auto-create the 'word-counts' topic
+      KAFKA_CREATE_TOPICS: "word-counts:1:1"
     networks:
       - stormnet
 
@@ -97,6 +99,31 @@ services:
     volumes:
       - ./data:/data/storm
       - ./logs:/logs
+    networks:
+      - stormnet
+
+  # Kafka Producer
+  producer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentence-producer
+    depends_on:
+      - kafka
+    networks:
+      - stormnet
+
+  # Storm Topology Submitter
+  storm-submit:
+    image: storm:2.8.2-jre21
+    container_name: storm-submit
+    depends_on:
+      - nimbus
+      - kafka
+    volumes:
+      - ./target/wordcount-topology.jar:/wordcount-topology.jar
+    entrypoint: >
+      sh -c "storm jar /wordcount-topology.jar com.example.wordcount.WordCountTopology wordcount-topology && tail -f /dev/null"
     networks:
       - stormnet
 
