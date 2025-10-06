@@ -1,0 +1,25 @@
+Apache Storm processes data in real time
+Kafka streams provide reliable messaging
+Docker simplifies deployment of complex applications
+Storm topologies consist of spouts and bolts
+Word count is a common streaming example
+This sentence contains several words
+Real time processing is different from batch processing
+Kafka topics store messages in partitions
+Spouts emit data into Storm topologies
+Bolts process data and emit results
+Docker containers isolate applications
+Zookeeper coordinates distributed systems
+Storm UI provides monitoring for topologies
+Messages in Kafka are ordered by partition
+Word counting can be done in multiple languages
+Storm supports Java, Python, and Clojure
+Kafka producers send data to topics
+Kafka consumers read data from topics
+Real time analytics are increasingly popular
+Distributed systems require careful management
+Each bolt can have multiple parallel instances
+Storm handles failures automatically
+Kafka brokers can scale horizontally
+Testing streaming applications is important
+This dataset is perfect for a demo
